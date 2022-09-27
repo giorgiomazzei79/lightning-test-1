@@ -1,0 +1,6 @@
+{
+  "name": "test-1",
+  "identifier": "com.metrological.app.test1",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
