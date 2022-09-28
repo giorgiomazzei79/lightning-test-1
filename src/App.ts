@@ -24,7 +24,7 @@ export default class App extends Lightning.Component {
     return [{ family: 'Regular', url: Utils.asset('fonts/Roboto-Regular.ttf') }]
   }
 
-  static _template() {
+  static override _template() {
     return {
       Background: {
         w: 1920,
@@ -53,7 +53,7 @@ export default class App extends Lightning.Component {
     }
   }
 
-  _init() {
+  override _init() {
     this.tag('Background')
       .animation({
         duration: 15,
