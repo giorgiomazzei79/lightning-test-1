@@ -18,16 +18,6 @@ module.exports = {
     semi: [2, 'never'],
     'no-extra-boolean-cast': 'off',
     'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
-    'prettier/prettier': [
-      'error',
-      {
-        trailingComma: 'es5',
-        singleQuote: true,
-        tabWidth: 2,
-        semi: false,
-        printWidth: 100,
-      },
-    ],
   },
   parserOptions: {
     parser: 'babel-eslint',
