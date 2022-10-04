@@ -1,19 +1,20 @@
 import { Lightning } from '@lightningjs/sdk'
 import styles from '../styles'
 
-interface Item {
+export interface Item {
   flags: { png: string }
   name: { common: string }
   population: string
   region: string
   capital: string
+  cioc: string
 }
 
 interface DetailsTemplateSpec extends Lightning.Component.TemplateSpec {
   Content: Record<string, unknown>
 }
 
-interface CountryCardTemplateSpec extends Lightning.Component.TemplateSpec {
+export interface CountryCardTemplateSpec extends Lightning.Component.TemplateSpec {
   item: Item
 
   Image: Record<string, unknown>
@@ -28,7 +29,7 @@ interface CountryCardSignalMap extends Lightning.Component.SignalMap {
   _cardEnterHandler(item: Item): void;
 }
 
-interface CountryCardTypeConfig extends Lightning.Component.TypeConfig {
+export interface CountryCardTypeConfig extends Lightning.Component.TypeConfig {
   SignalMapType: CountryCardSignalMap;
 }
 
@@ -47,6 +48,7 @@ export default class CountryCard
     population: '',
     region: '',
     capital: '',
+    cioc: ''
   }
 
   static override _template(): Lightning.Component.Template {
@@ -188,11 +190,6 @@ export default class CountryCard
   override _init() {
     const { flags, name, population, region, capital } = this.item
 
-    console.log(flags)
-    console.log(name)
-    console.log(population)
-    console.log(region)
-    console.log(capital)
     if (flags) {
       this.Image.patch({
         src: flags.png,

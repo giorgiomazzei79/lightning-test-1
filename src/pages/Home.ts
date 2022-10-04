@@ -1,9 +1,6 @@
-import {
-  Lightning,
-  // Router
-} from '@lightningjs/sdk'
+import { Lightning, Router } from '@lightningjs/sdk'
 import { getAll } from '../api/country'
-import CountryCard from '../components/CountryCard'
+import CountryCard, { Item, CountryCardTemplateSpec, CountryCardTypeConfig } from '../components/CountryCard'
 import styles from '../styles'
 
 interface HomePageTemplateSpec extends Lightning.Component.TemplateSpec {
@@ -76,17 +73,17 @@ export default class HomePage
   }
 
   get focusedItem() {
-    return this.Items.children[this._index]
+    return (this.Items.children[this._index] as Lightning.Component<CountryCardTemplateSpec, CountryCardTypeConfig>)
   }
 
-  // override _getFocused() {
-  //   return this.focusedItem
-  // }
+  override _getFocused() {
+    return this.focusedItem
+  }
 
   override _handleUp() {
     if (this._index - this._columns >= 0) {
       this._index -= this._columns
-      // this.animateToSelected()
+      this.animateToSelected()
     }
     return true
   }
@@ -94,7 +91,7 @@ export default class HomePage
   override _handleRight() {
     if (this._index + 1 < this._countries.length) {
       this._index += 1
-      // this.animateToSelected()
+      this.animateToSelected()
     }
     return true
   }
@@ -102,7 +99,7 @@ export default class HomePage
   override _handleDown() {
     if (this._index + this._columns < this._countries.length - 1) {
       this._index += this._columns
-      // this.animateToSelected()
+      this.animateToSelected()
     }
     return true
   }
@@ -110,28 +107,32 @@ export default class HomePage
   override _handleLeft() {
     if (this._index > 0) {
       this._index -= 1
-      // this.animateToSelected()
+      this.animateToSelected()
     }
     return true
   }
 
-  // override _active() {
-  //   this.patch({
-  //     y: -this.focusedItem?.finalY || 0,
-  //   })
-  // }
+  override _active() {
+    if (this.focusedItem) {
+      this.patch({
+        y: -this.focusedItem.finalY || 0,
+      })
+    }
+  }
 
-  // animateToSelected() {
-  //   this.patch({
-  //     smooth: {
-  //       y: -this.focusedItem.finalY,
-  //     },
-  //   })
-  // }
+  animateToSelected() {
+    if (this.focusedItem) {
+      this.patch({
+        smooth: {
+          y: -this.focusedItem.finalY,
+        },
+      })
+    }
+  }
 
-  // _cardEnterHandler(item: unknown) {
-  //   const { cioc } = item
+  _cardEnterHandler(item: Item) {
+    const { cioc } = item
 
-  //   Router.navigate(`country/${cioc}`)
-  // }
+    Router.navigate(`country/${cioc}`)
+  }
 }
