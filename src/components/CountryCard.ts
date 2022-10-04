@@ -9,12 +9,31 @@ interface Item {
   capital: string
 }
 
+interface DetailsTemplateSpec extends Lightning.Component.TemplateSpec {
+  Content: Record<string, unknown>
+}
+
 interface CountryCardTemplateSpec extends Lightning.Component.TemplateSpec {
   item: Item
+
+  Image: Record<string, unknown>
+  Name: Record<string, unknown>
+  Population: DetailsTemplateSpec
+  Region: DetailsTemplateSpec
+  Capital: DetailsTemplateSpec
+}
+
+interface CountryCardSignalMap extends Lightning.Component.SignalMap {
+  // eslint-disable-next-line no-unused-vars
+  _cardEnterHandler(item: Item): void;
+}
+
+interface CountryCardTypeConfig extends Lightning.Component.TypeConfig {
+  SignalMapType: CountryCardSignalMap;
 }
 
 export default class CountryCard
-  extends Lightning.Component<CountryCardTemplateSpec>
+  extends Lightning.Component<CountryCardTemplateSpec, CountryCardTypeConfig>
   implements Lightning.Component.ImplementTemplateSpec<CountryCardTemplateSpec>
 {
   static cardWidth: number = styles.spacing.xxlarge
@@ -32,8 +51,8 @@ export default class CountryCard
 
   static override _template(): Lightning.Component.Template {
     return {
-      w: CountryCard.cardWidth,
-      h: CountryCard.cardHeight,
+      w: this.cardWidth,
+      h: this.cardHeight,
       alpha: 0.7,
       color: 0xffffffff,
       rect: true,
@@ -131,6 +150,41 @@ export default class CountryCard
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  private _Image = this.tag('Image')!
+
+  get Image() {
+    return this._Image
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  private _Name = this.tag('Name')!
+
+  get Name() {
+    return this._Name
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  private _Population = this.tag('Population')!
+
+  get Population() {
+    return this._Population
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  private _Region = this.tag('Region')!
+
+  get Region() {
+    return this._Region
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  private _Capital = this.tag('Capital')!
+
+  get Capital() {
+    return this._Capital
+  }
+
   override _init() {
     const { flags, name, population, region, capital } = this.item
 
@@ -139,37 +193,41 @@ export default class CountryCard
     console.log(population)
     console.log(region)
     console.log(capital)
-    // if (flags) {
-    //   this.tag('Image').patch({
-    //     src: flags.png,
-    //   })
-    // }
-    //   this.tag('Name').patch({
-    //     text: {
-    //       text: name.common,
-    //     },
-    //   })
-    //   this.tag('Population').patch({
-    //     Content: {
-    //       text: {
-    //         text: population,
-    //       },
-    //     },
-    //   })
-    //   this.tag('Region').patch({
-    //     Content: {
-    //       text: {
-    //         text: region,
-    //       },
-    //     },
-    //   })
-    //   this.tag('Capital').patch({
-    //     Content: {
-    //       text: {
-    //         text: capital && capital.length > 0 ? capital[0] : '',
-    //       },
-    //     },
-    //   })
+    if (flags) {
+      this.Image.patch({
+        src: flags.png,
+      })
+    }
+
+    this.Name.patch({
+      text: {
+        text: name.common,
+      },
+    })
+
+    this.Population.patch({
+      Content: {
+        text: {
+          text: population,
+        },
+      },
+    })
+
+    this.Region.patch({
+      Content: {
+        text: {
+          text: region,
+        },
+      },
+    })
+
+    this.Capital.patch({
+      Content: {
+        text: {
+          text: capital && capital.length > 0 ? capital[0] : '',
+        },
+      },
+    })
   }
 
   /** Focus */
@@ -192,7 +250,7 @@ export default class CountryCard
   }
 
   /** Signals */
-  // override _handleEnter() {
-  //   this.signal('_cardEnterHandler', this.item)
-  // }
+  override _handleEnter() {
+    this.signal('_cardEnterHandler', this.item)
+  }
 }
