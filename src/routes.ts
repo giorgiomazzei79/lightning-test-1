@@ -1,4 +1,5 @@
 import HomePage from './pages/Home'
+import CountryPage from './pages/Country'
 
 export default {
   root: 'home',
@@ -6,6 +7,10 @@ export default {
     {
       path: 'home',
       component: HomePage,
+    },
+    {
+      path: 'country/:cioc',
+      component: CountryPage,
     },
   ],
 }

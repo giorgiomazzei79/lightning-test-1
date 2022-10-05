@@ -8,6 +8,7 @@ export interface Item {
   region: string
   capital: string
   cioc: string
+  languages: string
 }
 
 interface DetailsTemplateSpec extends Lightning.Component.TemplateSpec {
@@ -48,7 +49,8 @@ export default class CountryCard
     population: '',
     region: '',
     capital: '',
-    cioc: ''
+    cioc: '',
+    languages: ''
   }
 
   static override _template(): Lightning.Component.Template {
