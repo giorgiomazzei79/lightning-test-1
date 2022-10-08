@@ -2,6 +2,7 @@ import { Lightning, Router } from '@lightningjs/sdk'
 import { getAll } from '../api/country'
 import CountryCard, { Item, CountryCardTemplateSpec, CountryCardTypeConfig } from '../components/CountryCard'
 import styles from '../styles'
+import Navbar from '../widgets/Navbar'
 
 interface HomePageTemplateSpec extends Lightning.Component.TemplateSpec {
   _index: number
@@ -27,6 +28,7 @@ export default class HomePage
         padding: styles.spacing.large,
       },
       Items: {
+        y: Navbar.totalHeight,
         w: 1920 - styles.spacing.large * 2,
         flex: {
           direction: 'row',
@@ -81,7 +83,9 @@ export default class HomePage
   }
 
   override _handleUp() {
-    if (this._index - this._columns >= 0) {
+    if (this._index <= 5) {
+      Router.focusWidget('Navbar')
+    } else if (this._index - this._columns >= 0) {
       this._index -= this._columns
       this.animateToSelected()
     }
