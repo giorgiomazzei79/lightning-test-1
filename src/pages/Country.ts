@@ -2,6 +2,7 @@ import { Lightning, Router } from '@lightningjs/sdk'
 import { getCountry } from '../api/country'
 import { Item } from '../components/CountryCard'
 import styles from '../styles'
+import Navbar from '../widgets/Navbar'
 
 interface BackButtonTemplateSpec extends Lightning.Component.TemplateSpec {
   Label: Record<string, unknown>
@@ -52,7 +53,7 @@ export default class CountryPage
       flex: {
         direction: 'column',
         padding: styles.spacing.large,
-        paddingTop: styles.spacing.large,
+        paddingTop: styles.spacing.large + Navbar.totalHeight,
       },
       BackButton: {
         texture: Lightning.Tools.getRoundRect(
@@ -262,7 +263,7 @@ export default class CountryPage
   }
 
   /** API */
-  async getCountryData(code: string): void {
+  async getCountryData(code: string): Promise<void> {
     this._country = await getCountry(code)
 
     const { flags, name, population, region, capital, languages } =
@@ -365,6 +366,10 @@ export default class CountryPage
     })
 
     Router.navigate('home')
+  }
+
+  override _handleUp() {
+    Router.focusWidget('Navbar')
   }
 
   override _focus(): void {

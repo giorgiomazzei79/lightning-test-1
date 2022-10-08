@@ -19,9 +19,12 @@
 
 import { Utils, Router } from '@lightningjs/sdk'
 import routes from './routes'
+import Navbar from './widgets/Navbar'
 
 export default class App extends Router.App {
   override _setup() {
+    // TODO fix this
+    // @ts-expect-error: the routes need to be fixed
     Router.startRouter(routes)
   }
 
@@ -36,6 +39,11 @@ export default class App extends Router.App {
       h: 1080,
       color: 0xfff0f0f0,
       rect: true,
+      Widgets: {
+        Navbar: {
+          type: Navbar,
+        },
+      },
     }
   }
 }

@@ -7,10 +7,12 @@ export default {
     {
       path: 'home',
       component: HomePage,
+      widgets: ['Navbar'],
     },
     {
       path: 'country/:cioc',
       component: CountryPage,
+      widgets: ['Navbar'],
     },
   ],
 }
